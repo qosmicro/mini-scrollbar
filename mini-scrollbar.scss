@@ -6,13 +6,13 @@
 | https://qosmicro.com
 |
 |--------------------------------------------------------------------------
-| 
+|
 | Base on Simple Scrollbar
 | https://github.com/TorusHelm/simple-scrollbar-reworked
 |
 | Free to use under the MIT License.
 | https://gomakethings.com/mit/
-| 
+|
 |--------------------------------------------------------------------------
 */
 
@@ -195,7 +195,7 @@ $ms-scroll-radius: 0.125rem;
     }
 }
 
-// For the body while the scroll is being dragged 
+// For the body while the scroll is being dragged
 body.ms-grabbed {
     -o-user-select: none;
     -ms-user-select: none;

@@ -1,25 +1,25 @@
 /**
  * --------------------------------------------------------------------------
- * 
+ *
  * Mini Srollbar v1.0.0
  * A simple yet flexible scrollbar, by Jose Manuel Sanchez.
  * https://qosmicro.com
- * 
+ *
  * --------------------------------------------------------------------------
- * 
+ *
  * Base on Simple Scrollbar
  * https://github.com/TorusHelm/simple-scrollbar-reworked
  *
  * Free to use under the MIT License.
  * https://gomakethings.com/mit/
- * 
+ *
  * --------------------------------------------------------------------------
- * 
+ *
  * Usage:
- * 
+ *
  * Add attribute 'ms-container' to any DIV.
  * Target DIV should not have position 'static'.
- * Manual binding is possible too: 
+ * Manual binding is possible too:
  * SimpleScrollbar.initEl( document.querySelector('.myClass') );
  *
  * --------------------------------------------------------------------------
@@ -213,7 +213,7 @@
         }
     }
 
-    // Scroller Drag Handler 
+    // Scroller Drag Handler
     function dragDealer(scroll, context, direction) {
         var lastPage;
         var targetDOM;
