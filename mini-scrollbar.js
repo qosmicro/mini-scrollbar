@@ -29,9 +29,9 @@
     'use strict'
 
     if (typeof exports === 'object') {
-        module.exports = factory(window, document)
+        module.exports = factory(window, document);
     } else {
-        root.MiniScrollbar = factory(window, document)
+        root.MiniScrollbar = factory(window, document);
     }
 
 })(this, function (win, doc) {
@@ -182,10 +182,10 @@
                 // Hide/Show/Resize vertical scrollbar.
                 if (_this.trackY) {
                     if (_this.scrollRatioY >= 1 || _this.trackWidth == 0) {
-                        _this.trackY.classList.add('ms-hidden')
+                        _this.trackY.classList.add('ms-hidden');
                         needYX = false;
                     } else {
-                        _this.trackY.classList.remove('ms-hidden')
+                        _this.trackY.classList.remove('ms-hidden');
                         _this.scrollSizeY = Math.round(_this.barHeight * Math.max(_this.scrollRatioY, 0.1));
                         _this.scrollPositionY = Math.round((_this.container.scrollTop * (_this.barHeight - _this.scrollSizeY)) / (_this.totalHeight - _this.ownHeight));
                         _this.barY.style.cssText = 'height: ' + _this.scrollSizeY + 'px; top: ' + _this.scrollPositionY + 'px;';
@@ -195,10 +195,10 @@
                 // Hide/Show/Resize horizontal scrollbar.
                 if (_this.trackX) {
                     if (_this.scrollRatioX >= 1 | _this.trackHeight == 0) {
-                        _this.trackX.classList.add('ms-hidden')
+                        _this.trackX.classList.add('ms-hidden');
                         needYX = false;
                     } else {
-                        _this.trackX.classList.remove('ms-hidden')
+                        _this.trackX.classList.remove('ms-hidden');
                         _this.scrollSizeX = Math.round(_this.barWidth * Math.max(_this.scrollRatioX, 0.1));
                         _this.scrollPositionX = Math.round((_this.container.scrollLeft * (_this.barWidth - _this.scrollSizeX)) / (_this.totalWidth - _this.ownWidth));
                         _this.barX.style.cssText = 'width: ' + _this.scrollSizeX + 'px; left: ' + _this.scrollPositionX + 'px;';
@@ -206,11 +206,11 @@
                 }
 
                 if (_this.trackY && _this.trackX && needYX) {
-                    _this.trackY.classList.add('ms-trackYX')
-                    _this.trackX.classList.add('ms-trackYX')
+                    _this.trackY.classList.add('ms-trackYX');
+                    _this.trackX.classList.add('ms-trackYX');
                 } else {
-                    if (_this.trackY) _this.trackY.classList.remove('ms-trackYX')
-                    if (_this.trackX) _this.trackX.classList.remove('ms-trackYX')
+                    if (_this.trackY) _this.trackY.classList.remove('ms-trackYX');
+                    if (_this.trackX) _this.trackX.classList.remove('ms-trackYX');
                 }
             });
         }
