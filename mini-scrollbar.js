@@ -183,9 +183,11 @@
                 if (_this.trackY) {
                     if (_this.scrollRatioY >= 1 || _this.trackWidth == 0) {
                         _this.trackY.classList.add('ms-hidden');
+                        _this.wrapper.classList.add('ms-y-hidden');
                         needYX = false;
                     } else {
                         _this.trackY.classList.remove('ms-hidden');
+                        _this.wrapper.classList.remove('ms-y-hidden');
                         _this.scrollSizeY = Math.round(_this.barHeight * Math.max(_this.scrollRatioY, 0.1));
                         _this.scrollPositionY = Math.round((_this.container.scrollTop * (_this.barHeight - _this.scrollSizeY)) / (_this.totalHeight - _this.ownHeight));
                         _this.barY.style.cssText = 'height: ' + _this.scrollSizeY + 'px; top: ' + _this.scrollPositionY + 'px;';
@@ -196,9 +198,11 @@
                 if (_this.trackX) {
                     if (_this.scrollRatioX >= 1 | _this.trackHeight == 0) {
                         _this.trackX.classList.add('ms-hidden');
+                        _this.wrapper.classList.add('ms-x-hidden');
                         needYX = false;
                     } else {
                         _this.trackX.classList.remove('ms-hidden');
+                        _this.wrapper.classList.remove('ms-x-hidden');
                         _this.scrollSizeX = Math.round(_this.barWidth * Math.max(_this.scrollRatioX, 0.1));
                         _this.scrollPositionX = Math.round((_this.container.scrollLeft * (_this.barWidth - _this.scrollSizeX)) / (_this.totalWidth - _this.ownWidth));
                         _this.barX.style.cssText = 'width: ' + _this.scrollSizeX + 'px; left: ' + _this.scrollPositionX + 'px;';
