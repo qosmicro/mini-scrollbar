@@ -127,6 +127,9 @@
             // Adjust Parent Width & Padding
             this.wrapper.style.height = 'calc(100% + ' + this.trackHeight + 'px)';
 
+            // Adjust Wrapper Bottom Margin
+            this.wrapper.style.marginBottom = '-' + this.trackHeight + 'px';
+
             // Leave Space When Two Bars Are Needed
             if (this.needY) this.trackX.classList.add('ms-trackYX');
 
