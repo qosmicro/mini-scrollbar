@@ -199,16 +199,17 @@
                     if (_this.scrollRatioX >= 1 | _this.trackHeight == 0) {
                         _this.trackX.classList.add('ms-hidden');
                         _this.wrapper.classList.add('ms-x-hidden');
-                        _this.wrapper.style.marginBottom = '0px';
                         needYX = false;
                     } else {
                         _this.trackX.classList.remove('ms-hidden');
                         _this.wrapper.classList.remove('ms-x-hidden');
-                        _this.wrapper.style.marginBottom = '-' + _this.trackHeight + 'px';
                         _this.scrollSizeX = Math.round(_this.barWidth * Math.max(_this.scrollRatioX, 0.1));
                         _this.scrollPositionX = Math.round((_this.container.scrollLeft * (_this.barWidth - _this.scrollSizeX)) / (_this.totalWidth - _this.ownWidth));
                         _this.barX.style.cssText = 'width: ' + _this.scrollSizeX + 'px; left: ' + _this.scrollPositionX + 'px;';
                     }
+
+                    // Adjust Wrapper Bottom Margin
+                    _this.wrapper.style.marginBottom = '-' + _this.trackHeight + 'px';
                 }
 
                 if (_this.trackY && _this.trackX && needYX) {
