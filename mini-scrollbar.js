@@ -86,11 +86,19 @@
         this.wrapper.setAttribute('class', 'ms-wrapper');
         this.wrapper.appendChild(this.container);
 
+        // Check Where the Focus Is Before Moving Elements
+        var currentFocus = document.activeElement;
+
         // Move HTML to Main Container
         while (this.target.firstChild) {
             this.container.appendChild(this.target.firstChild);
         }
         this.target.appendChild(this.wrapper);
+
+        // Make Sure Previos Focus is Restored
+        if (this.container.contains(currentFocus)) {
+            currentFocus.focus();
+        }
 
         // Calculate Scrollbar Size
         this.trackWidth = this.wrapper.clientWidth - this.container.clientWidth;
