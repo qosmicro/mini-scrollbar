@@ -26,14 +26,14 @@ Include the attribute `ms-container` in any `<div>` that you want to make scroll
 ```
 
 ### Manual binding
-If you want to manually turn your div in a MiniScrollbar, you can use the `MiniScrollbar.initEl` method.
+If you want to manually turn your div in a MiniScrollbar, you can use the `MiniScrollbar.initElement` method.
 
 ```HTML
 <div class="myClass"></div>
 
 <script>
   var el = document.querySelector('.myClass');
-  MiniScrollbar.initEl(el);
+  MiniScrollbar.initElement(el);
 </script>
 ```
 

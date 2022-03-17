@@ -20,7 +20,7 @@
  * Add attribute 'ms-container' to any DIV.
  * Target DIV should not have position 'static'.
  * Manual binding is possible too:
- * SimpleScrollbar.initEl( document.querySelector('.myClass') );
+ * SimpleScrollbar.initElement( document.querySelector('.myClass') );
  *
  * --------------------------------------------------------------------------
  */
