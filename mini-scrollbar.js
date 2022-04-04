@@ -20,7 +20,7 @@
  * Add attribute 'ms-container' to any DIV.
  * Target DIV should not have position 'static'.
  * Manual binding is possible too:
- * SimpleScrollbar.initElement( document.querySelector('.myClass') );
+ * MiniScrollbar.initElement( document.querySelector('.myClass') );
  *
  * --------------------------------------------------------------------------
  */
@@ -47,8 +47,8 @@
 
     // Initiate Element
     function initElement(element) {
-        if (Object.prototype.hasOwnProperty.call(element, 'data-simple-scrollbar')) return;
-        Object.defineProperty(element, 'data-simple-scrollbar', { value: new MiniScrollbar(element) });
+        if (Object.prototype.hasOwnProperty.call(element, 'data-mini-scrollbar')) return;
+        Object.defineProperty(element, 'data-mini-scrollbar', { value: new MiniScrollbar(element) });
     }
 
     // Constructor Function
