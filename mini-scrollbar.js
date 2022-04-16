@@ -160,7 +160,8 @@
             for (let entry of entries) {
                 if (entry.contentBoxSize) {
                     entry.target.parentElement.dispatchEvent(new MouseEvent('mouseenter'));
-                    document.querySelector('.ms-grabbed').dispatchEvent(new MouseEvent('mousemove'));
+                    if (document.querySelector('.ms-grabbed') != undefined)
+                        document.querySelector('.ms-grabbed').dispatchEvent(new MouseEvent('mousemove'));
                 }
             }
         });
