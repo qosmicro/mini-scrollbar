@@ -150,9 +150,21 @@
         if (this.needX) dragDealer(this.barX, this, 'x');
         this.moveBar();
 
+        // Adds Listeners to Handle Scrollbar
         win.addEventListener('resize', this.moveBar.bind(this));
         this.container.addEventListener('scroll', this.moveBar.bind(this));
         this.container.addEventListener('mouseenter', this.moveBar.bind(this));
+
+        // Adds Special resizeObserver for Content
+        const resizeObserver = new ResizeObserver(entries => {
+            for (let entry of entries) {
+                if (entry.contentBoxSize) {
+                    entry.target.parentElement.dispatchEvent(new MouseEvent('mouseenter'));
+                    document.querySelector('.ms-grabbed').dispatchEvent(new MouseEvent('mousemove'));
+                }
+            }
+        });
+        resizeObserver.observe(this.wrapper.querySelector('.ms-content > *'));
     }
 
     minisb.prototype = {
