@@ -234,7 +234,6 @@
     // Scroller Drag Handler
     function dragDealer(scroll, context, direction) {
         var lastPage;
-        var targetDOM;
 
         scroll.addEventListener('mousedown', function (event) {
             scroll.parentElement.classList.add('ms-grabbed');
@@ -246,9 +245,6 @@
             // Initial Bar Top/Left
             if (context.barY) context.scrollPositionY = parseInt(window.getComputedStyle(context.barY).top);
             if (context.barX) context.scrollPositionX = parseInt(window.getComputedStyle(context.barX).left);
-
-            // Element Coordinates
-            targetDOM = context.target.getBoundingClientRect();
 
             // Add Listeners
             doc.addEventListener('mousemove', drag);
