@@ -18,7 +18,8 @@
  * Usage:
  *
  * Add attribute 'ms-container' to any DIV.
- * Target DIV should not have position 'static'.
+ * Target DIV must not have position 'static'.
+ * Target DIV should have a fixed height, but a max height is also possible.
  * Manual binding is possible too:
  * MiniScrollbar.initElement( document.querySelector('.myClass') );
  *
@@ -172,6 +173,12 @@
 
         // Place Bars in Position & Size Based on Current Scroll Place
         moveBar: function (event) {
+
+            // If Target Element Has maxHeight Set, Set it to the Container as Well
+            if (window.getComputedStyle(this.target).maxHeight != 'none') {
+                this.container.style.maxHeight = window.getComputedStyle(this.target).maxHeight;
+            }
+
             this.totalHeight = this.container.scrollHeight;
             this.totalWidth = this.container.scrollWidth;
             this.ownHeight = this.container.clientHeight;
