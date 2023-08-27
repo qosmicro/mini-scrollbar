@@ -60,7 +60,7 @@
 
         // Build/Destroy Scroll Structure on Resize
         win.addEventListener('resize', this.init.bind(this));
-        this.init(element);
+        this.init();
 
     }
 
