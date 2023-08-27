@@ -1,7 +1,7 @@
 /**
  * --------------------------------------------------------------------------
  *
- * Mini Srollbar v1.0.0
+ * Mini Srollbar v1.1.0
  * A simple yet flexible scrollbar, by Jose Manuel Sanchez.
  * https://qosmicro.com
  *
@@ -55,124 +55,181 @@
     // Constructor Function
     function minisb(element) {
 
-        // Check If Target Allows Scrolling
-        this.needY = false;
-        if (window.getComputedStyle(element).overflow == 'scroll' ||
-            window.getComputedStyle(element).overflow == 'auto' ||
-            window.getComputedStyle(element).overflowY == 'scroll' ||
-            window.getComputedStyle(element).overflowY == 'auto') {
-            this.needY = true;
-        }
-        this.needX = false;
-        if (window.getComputedStyle(element).overflow == 'scroll' ||
-            window.getComputedStyle(element).overflow == 'auto' ||
-            window.getComputedStyle(element).overflowX == 'scroll' ||
-            window.getComputedStyle(element).overflowX == 'auto') {
-            this.needX = true;
-        }
-
-        // If No Bar Is Needed... Quit
-        if (!this.needY && !this.needX) return false;
-
-        // Target Element to Apply Scroll
+        // Set Target Element
         this.target = element;
-        this.target.classList.add('mini-scrollbar-container');
 
-        // Main Container
-        this.container = doc.createElement('div');
-        this.container.setAttribute('class', 'ms-content');
+        // Build/Destroy Scroll Structure on Resize
+        win.addEventListener('resize', this.init.bind(this));
+        this.init(element);
 
-        // Container Wrapper
-        this.wrapper = doc.createElement('div');
-        this.wrapper.setAttribute('class', 'ms-wrapper');
-        this.wrapper.appendChild(this.container);
-
-        // Check Where the Focus Is Before Moving Elements
-        var currentFocus = document.activeElement;
-
-        // Move HTML to Main Container
-        while (this.target.firstChild) {
-            this.container.appendChild(this.target.firstChild);
-        }
-        this.target.appendChild(this.wrapper);
-
-        // Make Sure Previos Focus is Restored
-        if (this.container.contains(currentFocus)) {
-            currentFocus.focus();
-        }
-
-        // Calculate Scrollbar Size
-        this.trackWidth = this.wrapper.clientWidth - this.container.clientWidth;
-        this.trackHeight = this.wrapper.clientHeight - this.container.clientHeight;
-
-        // Vertical Bar
-        if (this.needY) {
-            this.barY = '<div class="ms-scroll">';
-            this.trackY = doc.createElement('div');
-            this.trackY.setAttribute('class', 'ms-trackY');
-            this.target.appendChild(this.trackY);
-            this.trackY.insertAdjacentHTML('beforeend', this.barY);
-            this.barY = this.trackY.lastChild;
-
-            // Adjust Parent Width
-            this.wrapper.style.width = 'calc(100% + ' + this.trackWidth + 'px)';
-
-            // Leave Space When Two Bars Are Needed
-            if (this.needX) this.trackY.classList.add('ms-trackYX');
-
-        } else {
-            this.container.style.overflowY = 'hidden';
-        }
-
-        // Horizontal Bar
-        if (this.needX) {
-            this.barX = '<div class="ms-scroll">';
-            this.trackX = doc.createElement('div');
-            this.trackX.setAttribute('class', 'ms-trackX');
-            this.target.appendChild(this.trackX);
-            this.trackX.insertAdjacentHTML('beforeend', this.barX);
-            this.barX = this.trackX.lastChild;
-
-            // Adjust Parent Width & Padding
-            this.wrapper.style.height = 'calc(100% + ' + this.trackHeight + 'px)';
-
-            // Adjust Wrapper Bottom Margin
-            this.wrapper.style.marginBottom = '-' + this.trackHeight + 'px';
-
-            // Leave Space When Two Bars Are Needed
-            if (this.needY) this.trackX.classList.add('ms-trackYX');
-
-        } else {
-            this.container.style.overflowX = 'hidden';
-        }
-
-        // Start Bars
-        if (this.needY) dragDealer(this.barY, this, 'y');
-        if (this.needX) dragDealer(this.barX, this, 'x');
-        this.moveBar();
-
-        // Adds Listeners to Handle Scrollbar
-        win.addEventListener('resize', this.moveBar.bind(this));
-        this.container.addEventListener('scroll', this.moveBar.bind(this));
-        this.container.addEventListener('mouseenter', this.moveBar.bind(this));
-
-        // Adds Special resizeObserver for Content
-        const resizeObserver = new ResizeObserver(entries => {
-            for (let entry of entries) {
-                if (entry.contentBoxSize) {
-                    entry.target.parentElement.dispatchEvent(new MouseEvent('mouseenter'));
-                    if (document.querySelector('.ms-grabbed') != undefined)
-                        document.querySelector('.ms-grabbed').dispatchEvent(new MouseEvent('mousemove'));
-                }
-            }
-        });
-        resizeObserver.observe(this.wrapper.querySelector('.ms-content > *'));
     }
 
     minisb.prototype = {
 
+        // Initialize Scroll Structure for Element
+        init: function () {
+
+            // Check If Structure Exists
+            var isBuilt = this.target.classList.contains('mini-scrollbar-container');
+
+            // We Remove the Class to Run the Tests
+            this.target.classList.remove('mini-scrollbar-container');
+
+            // Check If Target Allows Scrolling
+            this.needY = false;
+            if (window.getComputedStyle(this.target).overflow == 'scroll' ||
+                window.getComputedStyle(this.target).overflow == 'auto' ||
+                window.getComputedStyle(this.target).overflowY == 'scroll' ||
+                window.getComputedStyle(this.target).overflowY == 'auto') {
+                this.needY = true;
+            }
+            this.needX = false;
+            if (window.getComputedStyle(this.target).overflow == 'scroll' ||
+                window.getComputedStyle(this.target).overflow == 'auto' ||
+                window.getComputedStyle(this.target).overflowX == 'scroll' ||
+                window.getComputedStyle(this.target).overflowX == 'auto') {
+                this.needX = true;
+            }
+
+            // If Structure Exists...
+            if (isBuilt) {
+                this.target.classList.add('mini-scrollbar-container');
+
+                // If No Bar Is Needed... Remove Structure & Events
+                if (!this.needY && !this.needX) {
+
+                    // Remove Listeners
+                    this.resizeObserver.unobserve(this.wrapper.querySelector('.ms-content > *'));
+                    this.container.removeEventListener('scroll', this.moveBar.bind(this));
+                    this.container.removeEventListener('mouseenter', this.moveBar.bind(this));
+
+                    // Move HTML Back to Target
+                    while (this.container.firstChild) {
+                        this.target.appendChild(this.container.firstChild);
+                    }
+
+                    // Remove Containers
+                    if (this.trackY != undefined) this.trackY.remove();
+                    if (this.trackX != undefined) this.trackX.remove();
+                    if (this.wrapper != undefined) this.wrapper.remove();
+
+                    // Remove References
+                    this.container = null;
+                    this.wrapper = null;
+                    this.barY = null;
+                    this.trackY = null;
+                    this.barX = null;
+                    this.trackX = null;
+
+                    // Set as Removed
+                    this.target.classList.remove('mini-scrollbar-container');
+                }
+
+            } else {
+
+                // If Any Bar Is Needed... Create Structure & Events
+                if (this.needY || this.needX) {
+
+                    // Add Scroll Class
+                    this.target.classList.add('mini-scrollbar-container');
+
+                    // Main Container
+                    this.container = doc.createElement('div');
+                    this.container.setAttribute('class', 'ms-content');
+
+                    // Container Wrapper
+                    this.wrapper = doc.createElement('div');
+                    this.wrapper.setAttribute('class', 'ms-wrapper');
+                    this.wrapper.appendChild(this.container);
+
+                    // Check Where the Focus Is Before Moving Elements
+                    var currentFocus = document.activeElement;
+
+                    // Move HTML to Main Container
+                    while (this.target.firstChild) {
+                        this.container.appendChild(this.target.firstChild);
+                    }
+                    this.target.appendChild(this.wrapper);
+
+                    // Make Sure Previos Focus is Restored
+                    if (this.container.contains(currentFocus)) {
+                        currentFocus.focus();
+                        currentFocus = null;
+                    }
+
+                    // Calculate Scrollbar Size
+                    this.trackWidth = this.wrapper.clientWidth - this.container.clientWidth;
+                    this.trackHeight = this.wrapper.clientHeight - this.container.clientHeight;
+
+                    // Vertical Bar
+                    if (this.needY) {
+                        this.barY = '<div class="ms-scroll">';
+                        this.trackY = doc.createElement('div');
+                        this.trackY.setAttribute('class', 'ms-trackY');
+                        this.target.appendChild(this.trackY);
+                        this.trackY.insertAdjacentHTML('beforeend', this.barY);
+                        this.barY = this.trackY.lastChild;
+
+                        // Adjust Parent Width
+                        this.wrapper.style.width = 'calc(100% + ' + this.trackWidth + 'px)';
+
+                        // Leave Space When Two Bars Are Needed
+                        if (this.needX) this.trackY.classList.add('ms-trackYX');
+
+                    } else {
+                        this.container.style.overflowY = 'hidden';
+                    }
+
+                    // Horizontal Bar
+                    if (this.needX) {
+                        this.barX = '<div class="ms-scroll">';
+                        this.trackX = doc.createElement('div');
+                        this.trackX.setAttribute('class', 'ms-trackX');
+                        this.target.appendChild(this.trackX);
+                        this.trackX.insertAdjacentHTML('beforeend', this.barX);
+                        this.barX = this.trackX.lastChild;
+
+                        // Adjust Parent Width & Padding
+                        this.wrapper.style.height = 'calc(100% + ' + this.trackHeight + 'px)';
+
+                        // Adjust Wrapper Bottom Margin
+                        this.wrapper.style.marginBottom = '-' + this.trackHeight + 'px';
+
+                        // Leave Space When Two Bars Are Needed
+                        if (this.needY) this.trackX.classList.add('ms-trackYX');
+
+                    } else {
+                        this.container.style.overflowX = 'hidden';
+                    }
+
+                    // Start Bars
+                    if (this.needY) dragDealer(this.barY, this, 'y');
+                    if (this.needX) dragDealer(this.barX, this, 'x');
+                    this.moveBar();
+
+                    // Adds Listeners to Handle Scrollbar
+                    this.container.addEventListener('scroll', this.moveBar.bind(this));
+                    this.container.addEventListener('mouseenter', this.moveBar.bind(this));
+
+                    // Adds Special resizeObserver for Content
+                    this.resizeObserver = new ResizeObserver(entries => {
+                        for (let entry of entries) {
+                            if (entry.contentBoxSize) {
+                                entry.target.parentElement.dispatchEvent(new MouseEvent('mouseenter'));
+                                if (document.querySelector('.ms-grabbed') != undefined)
+                                    document.querySelector('.ms-grabbed').dispatchEvent(new MouseEvent('mousemove'));
+                            }
+                        }
+                    });
+                    this.resizeObserver.observe(this.wrapper.querySelector('.ms-content > *'));
+                }
+
+            }
+
+        },
+
         // Place Bars in Position & Size Based on Current Scroll Place
-        moveBar: function (event) {
+        moveBar: function () {
 
             // If Target Element Has maxHeight Set, Set it to the Container as Well
             if (window.getComputedStyle(this.target).maxHeight != 'none') {
